@@ -1,6 +1,7 @@
 const {Router} = require('express')
 var {getRandomInt} = require('../utils/randomNumber.js')
 const {myLogger} = require('../middleware/logger.js')
+const {checkInput} = require('../middleware/checkInput.js')
 
 const posts = []
 
@@ -16,7 +17,7 @@ function setupPostHandler(router) {
         })
     })
     
-    router.post('/', (req, res) => {
+    router.post('/', checkInput, (req, res) => {
         posts.push({
             "id": getRandomInt(9999999999999999),
             "title": req.body.title,
@@ -29,7 +30,7 @@ function setupPostHandler(router) {
         })
     })
     
-    router.put('/:postId', (req, res) => {
+    router.put('/:postId', checkInput, (req, res) => {
         // res.send('Got a PUT request at /user')
 
         console.log(req.params.postId)

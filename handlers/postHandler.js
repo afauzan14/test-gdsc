@@ -29,8 +29,35 @@ function setupPostHandler(router) {
         })
     })
     
-    router.put('/', (req, res) => {
-        res.send('Got a PUT request at /user')
+    router.put('/:postId', (req, res) => {
+        // res.send('Got a PUT request at /user')
+
+        console.log(req.params.postId)
+
+        const { title, description } = req.body
+
+        for(let i = 0; i < posts.length; i++) {
+            if(posts[i].id == req.params.postId) {
+                if(title) {
+                    posts[i].title = title
+                }
+
+                if(description) {
+                    posts[i].description = description
+                }
+      
+                res.end(JSON.stringify({
+                    status: true,
+                    message: "berhasil update data."
+                }))
+                return
+            }
+        }
+
+        res.json({
+            "message": `post with id ${req.params.postId} is not found`
+        })
+
     })
     
     router.delete('/:postId', (req, res) => {
